@@ -28,6 +28,6 @@ Em alguns softwares, como o navegador Firefox, você pode ativar a barra de tít
 
 Em outros, como a calculadora do GNOME, é necessário instalar a biblioteca **gtk3-nocsd** e reiniciar a sessão.
 
-No caso de softwares Flatpak ou Snap com decorações no lado cliente, tente substituir por versões APT quando possível. Se não houver, vide caso do emulador Snes9x, resta chorar mesmo se você é um humilde programador.
+No caso de softwares Flatpak ou Snap com decorações no lado cliente, tente substituir por versões APT quando possível. Se não houver, vide caso do aplicativo Spot, resta chorar mesmo se você é um humilde programador. Ou faça como um digno macOS user e nunca maximize suas janelas!
 
 by cleds.upper
