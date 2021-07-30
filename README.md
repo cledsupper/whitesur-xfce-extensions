@@ -8,4 +8,26 @@ Estes scripts ajudam a tornar o seu ambiente Xfce parecido com o tema Big Sur e 
 
 Ainda estou "portando" minhas configurações específicas para cá. Você pode verificar o tema original no [repositório oficial](https://github.com/vinceliuice/WhiteSur-gtk-theme/).
 
+
+## RESOLVENDO PROBLEMAS
+
+Assumindo que você está instalando o conjunto de software e temas mencionado neste [toot](https://mastodon.technology/@cledson_cavalcanti/106671133699093784), alguns problemas simples vão acontecer e causar artefatos visuais no seu pseudoMac baseado em Xfce.
+
+Esta seção traz algumas alternativas (ou "gambiarras") para esses problemas.
+
+### Opacidade do plugin Windowck estragando a beleza do painel
+
+O plugin Windowck fica com o fundo opaco ao usar o tema WhiteSur no painel do Xfce. Uma alternativa é manualmente aplicar a transparência no painel.
+
+Para o tema claro: altere o fundo do painel para a cor branca (\#FFFFFF) e ajuste a opacidade em 50%. Um clique direito na barra de ajuste abre um campo para digitar o percentual desejado.
+Para o tema escuro: altere o fundo do painel para a cor preta (\#000000) e ajuste a opacidade em 50%. Um clique direito na barra de ajuste abre um campo para digitar o percentual desejado.
+
+### Botões de janela duplicados em alguns aplicativos quando uso o Windowck
+
+Em alguns softwares, como o navegador Firefox, você pode ativar a barra de título nativa do gerenciador de janelas e assim esconder essa duplicata de botões.
+
+Em outros, como a calculadora do GNOME, é necessário instalar a biblioteca **gtk3-nocsd** e reiniciar a sessão.
+
+No caso de softwares Flatpak ou Snap com decorações no lado cliente, tente substituir por versões APT quando possível. Se não houver, vide caso do emulador Snes9x, resta chorar mesmo se você é um humilde programador.
+
 by cleds.upper
