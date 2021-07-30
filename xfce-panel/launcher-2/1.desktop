@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Panther
+Comment=Lançador de aplicativos
+Exec=panther_launcher
+Icon=xubuntu-logo-menu
+Path=
+Terminal=false
+StartupNotify=true
