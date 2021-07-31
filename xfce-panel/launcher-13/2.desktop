@@ -1,16 +1,14 @@
 [Desktop Entry]
+Version=1.0
 Type=Application
-Name[pt_BR]=Pesquisar
-Name[pt]=Synapse
-Name=Synapse
+Name[pt_BR]=Pesquisa Synapse
+Name[pt]=Pesquisa Synapse
+Name=Synapse Search
 Comment[pt_BR]=Busque em tudo que você faz.
 Comment[pt]=Procure tudo aquilo que faz.
 Comment=Search everything you do.
-Keywords=search;find;launch
 Exec=synapse
 Icon=folder-saved-search
-Categories=GNOME;Utility;
-X-XFCE-Source=file:///home/cledson/.cache/.fr-K06lWT/launcher-14/16276860072.desktop
 Path=
 Terminal=false
 StartupNotify=true
