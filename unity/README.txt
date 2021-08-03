@@ -19,9 +19,16 @@ Este é um script simples que gera os ícones de botões de janela (fechar, mini
  SOBRE E ETC.
 ==============
 
-Você pode pré-visualizar o resultado com esta captura de tela disponível neste post no Mastodon:
-https://mastodon.technology/@cledson_cavalcanti/106671133699093784
+As minhas extensões para o tema WhiteSur são uma tentativa de tornar o ambiente XFCE com um aspecto moderno e inteligente. Faço isso por pura diversão. Mas se você quiser apoiar e ajudar, sinta-se à vontade.
 
 Relate erros ou sugira melhorias neste repositório:
 https://github.com/cledsupper/whitesur-xfce-extensions
+
+Apóie esta e outras contribuições à comunidade XFCE, bem como toda a comunidade de software livre, com doações diretas:
+* PicPay: @cleds.upper
+* PayPal: https://www.paypal.com/donate?hosted_button_id=4FAGT3HK6RRVQ
+
+Veja condições na página do aplicativo Leshto Batt:
+https://gitlab.com/cledsupper/leshto-batt/-/blob/master/README.md
+
 by cleds.upper
