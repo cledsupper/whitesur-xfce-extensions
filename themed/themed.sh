@@ -77,7 +77,7 @@ trap on_term SIGINT
 trap on_term SIGHUP
 
 while [ 0 ]; do
-  sleep 1;
+  sleep 60;
 
   hours=$(timedatectl status | grep -m 1 -i "local" | grep -E -o "$FILTER" | grep -E -o -m 1 "[0-9]+")
   refresh_mode $hours
