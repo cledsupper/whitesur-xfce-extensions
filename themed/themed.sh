@@ -5,6 +5,9 @@ readonly WALL=$1
 readonly THEME="WhiteSur"
 readonly DIR_WALLPAPER=$2
 
+readonly THEMESET_PATH="$HOME/opt/themed/themeset.sh"
+readonly PANELSET_PATH="$HOME/opt/themed/panelset.sh"
+
 readonly H_LIGHT_BEG=5
 readonly H_LIGHT_END=12
 readonly H_AFTER_BEG=11
@@ -12,7 +15,7 @@ readonly H_AFTER_END=18
 
 mode="light"
 
-./themeset.sh check-only $THEME ign $DIR_WALLPAPER
+$THEMESET_PATH check-only $THEME ign $DIR_WALLPAPER
 ret=$?
 if [ $ret -ne 0 ]; then
   exit $ret
@@ -34,26 +37,26 @@ function update_themes {
   echo "Updating system theme to $mode mode..."
   case $WALL in
     W|T)
-      ./themeset.sh $WALL "$THEME" $mode "$DIR_WALLPAPER" nocheck
+      $THEMESET_PATH $WALL "$THEME" $mode "$DIR_WALLPAPER" nocheck
       ;;
 
     WT)
-      ./themeset.sh A "$THEME" $mode "$DIR_WALLPAPER" nocheck
+      $THEMESET_PATH A "$THEME" $mode "$DIR_WALLPAPER" nocheck
       ;;
 
     WP)
-      ./themeset.sh W "$THEME" $mode "$DIR_WALLPAPER" nocheck
-      ./panelset.sh $mode
+      $THEMESET_PATH W "$THEME" $mode "$DIR_WALLPAPER" nocheck
+      $PANELSET_PATH $mode
       ;;
 
     TP)
-      ./themeset.sh T "$THEME" $mode "$DIR_WALLPAPER" nocheck
-      ./panelset.sh $mode
+      $THEMESET_PATH T "$THEME" $mode "$DIR_WALLPAPER" nocheck
+      $PANELSET_PATH $mode
       ;;
 
     A)
-      ./themeset.sh A "$THEME" $mode "$DIR_WALLPAPER" nocheck
-      ./panelset.sh $mode
+      $THEMESET_PATH A "$THEME" $mode "$DIR_WALLPAPER" nocheck
+      $PANELSET_PATH $mode
   esac
 }
 
