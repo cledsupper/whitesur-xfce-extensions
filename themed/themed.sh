@@ -65,9 +65,6 @@ fi
 # readonly FILTER="(:[0-9]{2}[^:])|(:[0-9]{2}$)"
 readonly FILTER="[0-9]{2}:"
 
-hours=$(timedatectl | grep -m 1 -i "local" | grep -E -o "$FILTER" | grep -E -o -m 1 "[0-9]+")
-refresh_mode $hours
-
 while [ 0 ]; do
   sleep 1;
 
