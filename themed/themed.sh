@@ -48,17 +48,21 @@ function update_themes {
       $THEMESET_PATH $WALL "$THEME" $mode "$DIR_WALLPAPER" nocheck
       ;;
 
-    WT)
+    WT|TW)
       $THEMESET_PATH A "$THEME" $mode "$DIR_WALLPAPER" nocheck
       ;;
 
-    WP)
+    WP|PW)
       $THEMESET_PATH W "$THEME" $mode "$DIR_WALLPAPER" nocheck
       $PANELSET_PATH $mode
       ;;
 
-    TP)
+    TP|PT)
       $THEMESET_PATH T "$THEME" $mode "$DIR_WALLPAPER" nocheck
+      $PANELSET_PATH $mode
+      ;;
+
+    P)
       $PANELSET_PATH $mode
       ;;
 
