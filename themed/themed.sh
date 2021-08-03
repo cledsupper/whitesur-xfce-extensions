@@ -68,6 +68,14 @@ fi
 # readonly FILTER="(:[0-9]{2}[^:])|(:[0-9]{2}$)"
 readonly FILTER="[0-9]{2}:"
 
+function on_term {
+  exit 0
+}
+
+trap on_term SIGTERM
+trap on_term SIGINT
+trap on_term SIGHUP
+
 while [ 0 ]; do
   sleep 1;
 
