@@ -2,18 +2,18 @@
  DESCRIÇÃO
 ===========
 
-Este é um script simples que gera os ícones de botões de janela (fechar, minimizar e maximizar) para proveito pelo plugin Windowck.
+Este é um script que simplesmente baixa os ícones de botões de janela (fechar, minimizar e maximizar) para proveito pelo plugin Windowck.
 
-É feito exclusivamente para o tema GTK+ WhiteSur e o plugin mencionado. Como eu não entendo as "guidelines" do Unity, este script não é universal e pode gerar erros em outros pacotes de temas.
+Esta versão do script se utiliza do pacote macbuntu-os-ithemes-v1804 de NoobsLab para instalar os ícones.
+
 
 ===============
  COMO UTILIZAR
 ===============
 
-1. Copie o script para os diretórios do tema (os diretórios WhiteSur e WhiteSur-dark, por exemplo).
-2. Abra um terminal em cada um dos diretórios acima.
-3. Execute o comando: ./gen-unity-icons.sh
-4. Agora atualize o gerenciador de janelas (sair/iniciar sessão, por exemplo) e o Windowck começa a mostrar os botões com o tema correto.
+1. Copie o script para o diretório onde estão os temas (/home/meu_usuario/.themes, por exemplo).
+2. Abra um terminal e execute o script com o comando: ./gen-unity-icons.sh
+3. Agora atualize o gerenciador de janelas (sair/iniciar sessão, por exemplo) e o Windowck vai mostrar os botões com o tema correto.
 
 ==============
  SOBRE E ETC.
