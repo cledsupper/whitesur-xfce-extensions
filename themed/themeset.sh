@@ -26,6 +26,11 @@ if [ "$CheckErrors" = "" ]; then
   else
     CheckErrors=1
   fi
+elif [ $(($CheckErrors&E_WALLPAPER)) -eq 0 ]; then
+  readonly FILENAME_ENDING=$(ls $DIR_WALLPAPER | grep -i -E -o -m 1 "\.[a-z]{3}")
+  WALLPAPER_LIGHT="$DIR_WALLPAPER/$THEME-light$FILENAME_ENDING"
+  WALLPAPER_AFTERNOON="$DIR_WALLPAPER/$THEME$FILENAME_ENDING"
+  WALLPAPER_DARK="$DIR_WALLPAPER/$THEME-dark$FILENAME_ENDING"
 fi
 
 # LOG COMMANDS INSTEAD OF EXECUTING
