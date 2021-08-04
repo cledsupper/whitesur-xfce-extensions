@@ -4,20 +4,26 @@
 
 Estes scripts ajudam a tornar o seu ambiente Xfce parecido com o tema Big Sur e minimalismo do antigo Unity (Ubuntu):
 
-![Prévia de WhiteSur Xfce Extensions](https://cdn.mastodon.technology/media_attachments/files/106/671/101/963/689/471/original/51c3f8958cc6d257.png "Captura de tela do ambiente Xfce")
+### Variante clara
+
+![Versão clara de WhiteSur Xfce Extensions](https://cdn.mastodon.technology/media_attachments/files/106/700/184/877/833/845/original/a149b98c1bab4040.png "Captura de tela do ambiente Xfce")
+
+### Variante escura
+
+![Versão escura de WhiteSur Xfce Extensions](https://cdn.mastodon.technology/media_attachments/files/106/700/184/864/607/130/original/13d4156349d1900f.png "Captura de tela do ambiente Xfce")
 
 Ainda estou "portando" minhas configurações específicas para cá. Você pode verificar o tema original no [repositório oficial][1].
 
 
 ## RESOLVENDO PROBLEMAS
 
-Assumindo que você está instalando o conjunto de software e temas mencionado neste [toot](https://mastodon.technology/@cledson_cavalcanti/106671133699093784), alguns problemas simples vão acontecer e causar artefatos visuais no seu pseudoMac baseado em Xfce.
+Assumindo que você está instalando o conjunto de software e temas mencionado neste [toot](https://mastodon.technology/@cledson_cavalcanti/106671133699093784), alguns problemas simples vão acontecer e causar artefatos visuais no seu pseudoMac baseado em XFCE.
 
 Esta seção traz algumas alternativas (ou "gambiarras") para esses problemas.
 
 ### Texto e ícones brancos no painel com o tema claro
 
-Você pode sugerir uma correção abrindo uma issue no [repositório oficial][1]. Por hora, prefira usar a variante escura do tema que não causa esses problemas.
+A nova versão da configuração do painel do XFCE contém truques que "driblam" a falta de compatibilidade do tema original.
 
 ### Opacidade do plugin Windowck estragando a beleza do painel
 
@@ -34,6 +40,11 @@ Em alguns softwares, como o navegador Firefox, você pode ativar a barra de tít
 Em outros, como a calculadora do GNOME, é necessário instalar a biblioteca **gtk3-nocsd** e reiniciar a sessão.
 
 No caso de softwares Flatpak ou Snap com decorações no lado cliente, tente substituir por versões APT quando possível. Se não houver, vide caso do aplicativo Spot, resta chorar mesmo se você é um humilde programador. Ou faça como um digno macOS user e nunca maximize suas janelas!
+
+
+## NOTA DE AUTORIA
+
+Os temas (incluso ícones) e papéis de parede NÃO SÃO de minha autoria. Todo esse repositório apenas combina temas existentes para que fiquem "coesos" no XFCE, complementando o sistema com alguma inteligência.
 
 by cleds.upper
 
