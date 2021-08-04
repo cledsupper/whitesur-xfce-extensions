@@ -1,0 +1,54 @@
+/configver 2
+/panels [<1>]
+/panels/panel-1/autohide-behavior uint32 0
+/panels/panel-1/background-alpha uint32 100
+/panels/panel-1/background-rgba [<1.0>, <1.0>, <1.0>, <0.2>]
+/panels/panel-1/background-style uint32 1
+/panels/panel-1/disable-struts false
+/panels/panel-1/enter-opacity uint32 100
+/panels/panel-1/leave-opacity uint32 100
+/panels/panel-1/length uint32 100
+/panels/panel-1/mode uint32 0
+/panels/panel-1/nrows uint32 1
+/panels/panel-1/plugin-ids [<1>, <2>, <3>, <4>, <5>, <6>, <7>, <8>, <9>, <10>, <11>, <12>, <13>, <14>, <15>, <16>]
+/panels/panel-1/position 'p=6;x=512;y=22'
+/panels/panel-1/position-locked true
+/panels/panel-1/size uint32 32
+/plugins/plugin-1 'separator'
+/plugins/plugin-1/expand false
+/plugins/plugin-1/style uint32 0
+/plugins/plugin-2 'launcher'
+/plugins/plugin-2/items [<'1.desktop'>]
+/plugins/plugin-3 'separator'
+/plugins/plugin-3/style uint32 0
+/plugins/plugin-4 'appmenu'
+/plugins/plugin-4/plugins/plugin-4/bold-application-name true
+/plugins/plugin-4/plugins/plugin-4/compact-mode false
+/plugins/plugin-4/plugins/plugin-4/expand true
+/plugins/plugin-5 'separator'
+/plugins/plugin-5/expand false
+/plugins/plugin-5/style uint32 0
+/plugins/plugin-6 'systray'
+/plugins/plugin-6/names-hidden [<'synapse'>]
+/plugins/plugin-6/show-frame true
+/plugins/plugin-6/size-max uint32 22
+/plugins/plugin-7 'pulseaudio'
+/plugins/plugin-7/enable-keyboard-shortcuts true
+/plugins/plugin-8 'statusnotifier'
+/plugins/plugin-9 'notification-plugin'
+/plugins/plugin-10 'power-manager-plugin'
+/plugins/plugin-11 'separator'
+/plugins/plugin-11/style uint32 0
+/plugins/plugin-12 'launcher'
+/plugins/plugin-12/items [<'2.desktop'>]
+/plugins/plugin-13 'actions'
+/plugins/plugin-13/appearance uint32 1
+/plugins/plugin-14 'separator'
+/plugins/plugin-14/style uint32 0
+/plugins/plugin-15 'clock'
+/plugins/plugin-15/digital-format '%Hh%M'
+/plugins/plugin-15/mode uint32 2
+/plugins/plugin-15/show-frame true
+/plugins/plugin-15/tooltip-format '%A %d %B %Y'
+/plugins/plugin-16 'separator'
+/plugins/plugin-16/style uint32 0
