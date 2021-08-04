@@ -45,7 +45,8 @@ fi
 
 $THEMESET_PATH check-only $THEME ign $DIR_WALLPAPER
 errors=$?
-if [ $errors -eq 3 ]; then  
+if ( [ $errors -eq 3 ] || [ $errors -eq 11 ] ); then
+  # Exit when wallpaper(1)+GTK(2)+(+panel(8)) errors are turned on
   exit $errors
 fi
 
