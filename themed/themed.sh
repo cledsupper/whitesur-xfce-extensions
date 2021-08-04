@@ -2,14 +2,14 @@
 
 #############################################
 #     themed - Theme Daemon for XFCE 4      #
-#               version 0.1                 #
+#               version 0.2                 #
 #                                           #
 # by cleds.upper                            #
 # mastodon.technology/@cledson_cavalcanti   #
 #############################################
 
 readonly SCRIPT=$0
-readonly WALL=$1
+WALL=$1
 readonly THEME="WhiteSur"
 readonly DIR_WALLPAPER=$2
 
@@ -23,12 +23,37 @@ readonly H_AFTER_END=18
 
 mode="light"
 
-$THEMESET_PATH check-only $THEME ign $DIR_WALLPAPER
-ret=$?
-if [ $ret -ne 0 ]; then
-  exit $ret
+## CHECK DEPENDENCIES
+
+timedatectl status 1> /dev/null
+if [ $? -ne 0 ]; then
+  exit 1
 fi
 
+test -x $THEMESET_PATH
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+
+test -x $PANELSET_PATH
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+
+
+## CHECK IF THEMES AND FILES ARE AVAILABLE
+
+$THEMESET_PATH check-only $THEME ign $DIR_WALLPAPER
+errors=$?
+if [ $errors -eq 3 ]; then  
+  exit $errors
+fi
+
+$PANELSET_PATH check-only
+export CheckErrors=$(($errors|$?))
+
+
+# Set mode according with time
 function refresh_mode {
   hours=$1
   if ( [ $hours -gt $H_LIGHT_BEG ] && [ $hours -lt $H_LIGHT_END ] ); then
@@ -52,36 +77,34 @@ function update_themes {
       $THEMESET_PATH A "$THEME" $mode "$DIR_WALLPAPER" nocheck
       ;;
 
-    WP|PW)
-      $THEMESET_PATH W "$THEME" $mode "$DIR_WALLPAPER" nocheck
-      $PANELSET_PATH $mode
-      ;;
-
-    TP|PT)
-      $THEMESET_PATH T "$THEME" $mode "$DIR_WALLPAPER" nocheck
-      $PANELSET_PATH $mode
-      ;;
-
     P)
       $PANELSET_PATH $mode
       ;;
 
-    A)
-      $THEMESET_PATH A "$THEME" $mode "$DIR_WALLPAPER" nocheck
+    WP|PW)
       $PANELSET_PATH $mode
+      $THEMESET_PATH W "$THEME" $mode "$DIR_WALLPAPER" nocheck
+      ;;
+
+    TP|PT)
+      $PANELSET_PATH $mode
+      $THEMESET_PATH T "$THEME" $mode "$DIR_WALLPAPER" nocheck
+      ;;
+
+    A)
+      $PANELSET_PATH $mode
+      $THEMESET_PATH A "$THEME" $mode "$DIR_WALLPAPER" nocheck
   esac
 }
 
-timedatectl status 1> /dev/null
-if [ $? -ne 0 ]; then
-  exit 1
-fi
-
-# readonly FILTER="(:[0-9]{2}[^:])|(:[0-9]{2}$)"
+#readonly FILTER="(:[0-9]{2}[^:])|(:[0-9]{2}$)"
 readonly FILTER="[0-9]{2}:"
 
 # change process name
 printf themed > /proc/self/comm
+
+
+## SERVICE RUNNING
 
 while [ 0 ]; do
   sleep 60;

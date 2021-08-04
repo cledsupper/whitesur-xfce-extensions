@@ -5,6 +5,12 @@ readonly THD=("0.215686" "0.215686" "0.215686" "0.2")
 # THEME LIGHT
 readonly THL=("1" "1" "1" "0.2")
 
+readonly E_PANEL=8
+
+if [ "$CheckErrors" = "" ]; then
+  CheckErrors=0
+fi
+
 # LOG COMMANDS INSTEAD OF EXECUTING
 readonly DEBUG_MODE=1
 echoIt=""
@@ -12,8 +18,27 @@ if [ $DEBUG_MODE -eq 1 ]; then
   echoIt="echo"
 fi
 
+function panel_check {
+  printf "Checking if panel-1 exists... "
+  xfconf-query -c xfce4-panel -p /panels/panel-1 -l 1> /dev/null 2> /dev/null
+  if [ $? -ne 0 ]; then
+    echo "fail!"
+    echo
+    CheckErrors=$(($CheckErrors|$E_PANEL))
+    return 1
+  fi
+  echo "ok!"
+  echo
+
+  return 0
+}
+
 function set_panel {
   mode=$1
+  if [ $(($CheckErrors&$E_PANEL)) -ne 0 ]; then
+    return 1
+  fi
+
   echo "Set panel to $mode mode"
   case $mode in
     dark)
@@ -41,7 +66,9 @@ function set_panel {
 }
 
 case $1 in
-  config)
+  check-only)
+    panel_check
+    exit $CheckErrors
     ;;
 
   *)
