@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # THEME DARK
-readonly THD=("0.215686" "0.215686" "0.215686" "0.2")
+readonly THD=("0.215686" "0.215686" "0.215686" "0.5")
 # THEME LIGHT
 readonly THL=("1" "1" "1" "0.2")
 
