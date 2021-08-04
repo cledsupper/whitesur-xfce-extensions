@@ -6,6 +6,17 @@ O themed, inicialmente, é apenas um daemon para o XFCE que mantém atualizado o
 
 Por ser uma versão muito imatura, é preciso alterar à mão o código do script para que ele funcione com outros temas além do WhiteSur.
 
+
+===============
+ ANTES DE USAR
+===============
+
+Para que o 'themed' reconheça a versão clara dos pacotes de tema WhiteSur, os nomes dos diretórios "WhiteSur-light" devem ser renomeados para apenas "WhiteSur". Isso inclui o tema de ícones!
+
+Por que?
+Os temas GTK padrões (Adwaita e Greybird) não possuem versões claras nomeadas como "-light". Ambos seguem o padrão "Tema"/"Tema-dark".
+
+
 ===============
  COMO UTILIZAR
 ===============
