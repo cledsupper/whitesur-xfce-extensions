@@ -9,7 +9,7 @@
 #############################################
 
 readonly SCRIPT=$0
-WALL=$1
+readonly WALL=$1
 readonly THEME="WhiteSur"
 readonly DIR_WALLPAPER=$2
 

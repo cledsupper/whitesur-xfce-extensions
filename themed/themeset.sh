@@ -197,7 +197,7 @@ function themes_check {
 function set_theme {
   mode=$1
   themes_check
-  if ( [ $? -ne 0 ] || [ $(($CheckErrors&$E_THEME_GTK)) -ne 0 ] ); then
+  if [ $(($CheckErrors&$E_THEME_GTK)) -ne 0 ]; then
     return 1
   fi
 
