@@ -34,7 +34,7 @@ elif [ $(($CheckErrors&E_WALLPAPER)) -eq 0 ]; then
 fi
 
 # LOG COMMANDS INSTEAD OF EXECUTING
-readonly DEBUG_MODE=1
+readonly DEBUG_MODE=0
 echoIt=""
 if [ $DEBUG_MODE -eq 1 ]; then
   echoIt="echo"
