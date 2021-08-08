@@ -32,9 +32,9 @@
 /plugins/plugin-6/names-hidden [<'synapse'>]
 /plugins/plugin-6/show-frame true
 /plugins/plugin-6/size-max uint32 22
-/plugins/plugin-7 'pulseaudio'
-/plugins/plugin-7/enable-keyboard-shortcuts true
-/plugins/plugin-8 'statusnotifier'
+/plugins/plugin-7 'statusnotifier'
+/plugins/plugin-8 'pulseaudio'
+/plugins/plugin-8/enable-keyboard-shortcuts true
 /plugins/plugin-9 'notification-plugin'
 /plugins/plugin-10 'power-manager-plugin'
 /plugins/plugin-11 'separator'
