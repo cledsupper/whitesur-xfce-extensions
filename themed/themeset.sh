@@ -33,15 +33,21 @@ elif [ $(($CheckErrors&E_WALLPAPER)) -eq 0 ]; then
   WALLPAPER_DARK="$DIR_WALLPAPER/$THEME-dark$FILENAME_ENDING"
 fi
 
+# This may change according to each device
+if [ "$PROP_WALLPAPER" = "" ]; then
+  disProfile=$(xfconf-query -c displays -p /ActiveProfile)
+  # disProfile: Default
+  disName=$(xfconf-query -c displays -p /$disProfile -l | grep -Eio -m 1 "[a-z]+\-[0-9]+")
+  # disName: XYZ-1
+  readonly PROP_WALLPAPER="/backdrop/screen0/monitor$disName/workspace0/last-image"
+fi
+
 # LOG COMMANDS INSTEAD OF EXECUTING
 readonly DEBUG_MODE=0
 echoIt=""
 if [ $DEBUG_MODE -eq 1 ]; then
   echoIt="echo"
 fi
-
-# This may change according to each device
-readonly PROP_WALLPAPER="/backdrop/screen0/monitoreDP-1/workspace0/last-image"
 
 function help {
   echo "USAGE: $SCRIPT <W|T|A(ll)> <\"MyTheme\"> <afternoon|dark|light> [\"/path/to/wallpapers/\"]"
