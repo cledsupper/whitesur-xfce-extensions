@@ -13,8 +13,13 @@ readonly WALL=$1
 readonly THEME="WhiteSur"
 readonly DIR_WALLPAPER=$2
 
-readonly THEMESET_PATH="$HOME/opt/themed/themeset.sh"
-readonly PANELSET_PATH="$HOME/opt/themed/panelset.sh"
+if [ "$THEMED_PATH" = "" ]; then
+  readonly THEMESET_PATH="$HOME/opt/themed/themeset.sh"
+  readonly PANELSET_PATH="$HOME/opt/themed/panelset.sh"
+else
+  readonly THEMESET_PATH="$THEMED_PATH/themeset.sh"
+  readonly PANELSET_PATH="$THEMED_PATH/panelset.sh"
+fi
 
 readonly H_LIGHT_BEG=6
 readonly H_LIGHT_END=12
@@ -43,15 +48,24 @@ fi
 
 ## CHECK IF THEMES AND FILES ARE AVAILABLE
 
-$THEMESET_PATH check-only $THEME ign $DIR_WALLPAPER
+readonly E_WALLPAPER=1
+readonly E_THEME_GTK=2
+readonly E_THEME_ICON=4
+readonly E_PANEL=8
+
+$THEMESET_PATH --check-only -t "$THEME" -w "$THEME" "$DIR_WALLPAPER"
 errors=$?
-if ( [ $errors -eq 3 ] || [ $errors -eq 11 ] ); then
-  # Exit when wallpaper(1)+GTK(2)+(+panel(8)) errors are turned on
+if ( [ $errors -eq 3 ] || [ $errors -eq 255 ] ); then
+  # Exit when there are fatal errors
   exit $errors
 fi
 
 $PANELSET_PATH check-only
-export THEMED_ERRORS=$(($errors|$?))
+errors=$(($errors|$?))
+if [ $errors -eq 8 ]; then
+  exit 8
+fi
+export THEMED_ERRORS=$errors
 
 
 # Set mode according with time

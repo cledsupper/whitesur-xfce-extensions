@@ -23,11 +23,12 @@ function help {
   echo "    -t \"MyTheme\": must be theme/wallpaper name"
   echo "    -m [light|afternoon|dark]: set variant for theme or wallpaper"
   echo "        afternoon is a default"
-  echo "    -w \"/path/to/wallpapers\": must be wallpapers directory"
+  echo "    -w \"MyWallpaper\" \"/path/to/wallpapers\": must be wallpaper basename and full path"
   echo
   echo "FLAGS"
   echo "    --check-only: check files and settings and return errors"
   echo "    --no-check: run commands without checking anything"
+  echo "    --show: print current theme or wallpaper (set nothing)"
   echo
   echo "themeset.sh"
   echo "by cleds.upper"
@@ -296,12 +297,18 @@ function show_theme {
           DIR_WALLPAPER=${args[$narg+2]}
         else
           help
-          exit -1
+          exit 255
         fi
 
-        if ( [ $SET_NOTHING -eq 0 ] && [ "${args[$narg+1]}" = "" ] ); then
-          help
-          exit -1
+        if [ $SET_NOTHING -eq 0 ]; then
+          s=$skip
+          while [ $s -gt 0 ]; do
+            if [ "${args[$narg+$s]}" = "" ]; then
+              help
+              exit 255
+            fi
+            s=$(($s-1))
+          done
         fi
       fi
 
