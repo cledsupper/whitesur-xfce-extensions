@@ -51,7 +51,7 @@ if ( [ $errors -eq 3 ] || [ $errors -eq 11 ] ); then
 fi
 
 $PANELSET_PATH check-only
-export CheckErrors=$(($errors|$?))
+export THEMED_ERRORS=$(($errors|$?))
 
 
 # Set mode according with time
@@ -70,12 +70,16 @@ prevMode="none"
 function update_themes {
   echo "Updating system theme to $mode mode..."
   case $WALL in
-    W|T)
-      $THEMESET_PATH $WALL "$THEME" $mode "$DIR_WALLPAPER" nocheck
+    W)
+      $THEMESET_PATH -m "$mode" -w "$THEME" "$DIR_WALLPAPER" --no-check
+      ;;
+
+    T)
+      $THEMESET_PATH -m "$mode" -t "$THEME" --no-check
       ;;
 
     WT|TW)
-      $THEMESET_PATH A "$THEME" $mode "$DIR_WALLPAPER" nocheck
+      $THEMESET_PATH -t "$THEME" $mode -w "$THEME" "$DIR_WALLPAPER" --no-check
       ;;
 
     P)
@@ -84,17 +88,17 @@ function update_themes {
 
     WP|PW)
       $PANELSET_PATH $mode
-      $THEMESET_PATH W "$THEME" $mode "$DIR_WALLPAPER" nocheck
+      $THEMESET_PATH -m "$mode" -w "$THEME" "$DIR_WALLPAPER" --no-check
       ;;
 
     TP|PT)
       $PANELSET_PATH $mode
-      $THEMESET_PATH T "$THEME" $mode "$DIR_WALLPAPER" nocheck
+      $THEMESET_PATH -m "$mode" -t "$THEME" --no-check
       ;;
 
     A)
       $PANELSET_PATH $mode
-      $THEMESET_PATH A "$THEME" $mode "$DIR_WALLPAPER" nocheck
+      $THEMESET_PATH -m "$mode" -t "$THEME" -w "$THEME" "$DIR_WALLPAPER" --no-check
   esac
 }
 

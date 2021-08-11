@@ -7,12 +7,12 @@ readonly THL=("1" "1" "1" "0.2")
 
 readonly E_PANEL=8
 
-if [ "$CheckErrors" = "" ]; then
-  CheckErrors=0
+if [ "$THEMED_ERRORS" = "" ]; then
+  THEMED_ERRORS=0
 fi
 
 # LOG COMMANDS INSTEAD OF EXECUTING
-readonly DEBUG_MODE=0
+readonly DEBUG_MODE=1
 echoIt=""
 if [ $DEBUG_MODE -eq 1 ]; then
   echoIt="echo"
@@ -24,7 +24,7 @@ function panel_check {
   if [ $? -ne 0 ]; then
     echo "fail!"
     echo
-    CheckErrors=$(($CheckErrors|$E_PANEL))
+    THEMED_ERRORS=$(($THEMED_ERRORS|$E_PANEL))
     return 1
   fi
   echo "ok!"
@@ -35,7 +35,7 @@ function panel_check {
 
 function set_panel {
   mode=$1
-  if [ $(($CheckErrors&$E_PANEL)) -ne 0 ]; then
+  if [ $(($THEMED_ERRORS&$E_PANEL)) -ne 0 ]; then
     return 1
   fi
 
@@ -68,7 +68,7 @@ function set_panel {
 case $1 in
   check-only)
     panel_check
-    exit $CheckErrors
+    exit $THEMED_ERRORS
     ;;
 
   *)
