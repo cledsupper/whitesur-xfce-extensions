@@ -16,9 +16,9 @@ readonly DIR_WALLPAPER=$2
 readonly THEMESET_PATH="$HOME/opt/themed/themeset.sh"
 readonly PANELSET_PATH="$HOME/opt/themed/panelset.sh"
 
-readonly H_LIGHT_BEG=5
+readonly H_LIGHT_BEG=6
 readonly H_LIGHT_END=12
-readonly H_AFTER_BEG=11
+readonly H_AFTER_BEG=12
 readonly H_AFTER_END=18
 
 mode="light"
@@ -57,9 +57,9 @@ export CheckErrors=$(($errors|$?))
 # Set mode according with time
 function refresh_mode {
   hours=$1
-  if ( [ $hours -gt $H_LIGHT_BEG ] && [ $hours -lt $H_LIGHT_END ] ); then
+  if ( [ $hours -ge $H_LIGHT_BEG ] && [ $hours -lt $H_LIGHT_END ] ); then
     mode="light"
-  elif ( [ $hours -gt $H_AFTER_BEG ] && [ $hours -lt $H_AFTER_END ] ); then
+  elif ( [ $hours -ge $H_AFTER_BEG ] && [ $hours -lt $H_AFTER_END ] ); then
     mode="afternoon"
   else
     mode="dark"
