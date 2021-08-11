@@ -26,8 +26,6 @@ readonly H_LIGHT_END=12
 readonly H_AFTER_BEG=12
 readonly H_AFTER_END=18
 
-mode="light"
-
 ## CHECK DEPENDENCIES
 
 timedatectl status 1> /dev/null

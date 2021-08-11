@@ -17,13 +17,13 @@ if [ $DEBUG_MODE -eq 1 ]; then
 fi
 
 function help {
-  echo "USAGE: $SCRIPT [options]"
+  echo "USAGE: $SCRIPT [flags] [options]"
   echo
   echo "OPTIONS"
-  echo "    -t \"MyTheme\": must be theme/wallpaper name"
-  echo "    -m [light|afternoon|dark]: set variant for theme or wallpaper"
-  echo "        afternoon is a default"
-  echo "    -w \"MyWallpaper\" \"/path/to/wallpapers\": must be wallpaper basename and full path"
+  echo "    -t \"MyTheme\": theme basename (\"Adwaita-dark\" -> \"Adwaita\")"
+  echo "    -m [light|afternoon|dark]: variants for theme AND wallpaper"
+  echo "        afternoon is default"
+  echo "    -w \"MyWallpaper\" \"/path/to/wallpapers\": wallpaper basename and full path (\"MyWallpaper-light.png\" -> \"MyWallpaper\")"
   echo
   echo "FLAGS"
   echo "    --check-only: check files and settings and return errors"
@@ -249,7 +249,7 @@ function show_theme {
 #function initialize {
   SCRIPT=$0
   CHECK=0 # default
-  MODE="light"
+  MODE="afternoon"
 
   # boolean values
   USE_THEME=0
@@ -279,12 +279,7 @@ function show_theme {
         || [ "$arg" = "--show" ] ); then
         :
       else
-        if [ $SET_NOTHING -eq 0 ]; then
-          skip=1
-        else
-          skip=0
-        fi
-
+        skip=1
         if [ "$arg" = "-t" ]; then
           USE_THEME=1
           THEME=${args[$narg+1]}
@@ -298,6 +293,9 @@ function show_theme {
         else
           help
           exit 255
+        fi
+        if [ $SET_NOTHING -eq 1 ]; then
+          skip=0
         fi
 
         if [ $SET_NOTHING -eq 0 ]; then

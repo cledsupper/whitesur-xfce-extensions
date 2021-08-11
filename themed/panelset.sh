@@ -65,12 +65,18 @@ function set_panel {
   esac
 }
 
-case $1 in
+if [ "$1" = "" ]; then
+  mode="afternoon"
+else
+  mode=$1
+fi
+
+case $mode in
   check-only)
     panel_check
     exit $THEMED_ERRORS
     ;;
 
   *)
-    set_panel $1
+    set_panel $mode
 esac
