@@ -118,7 +118,7 @@ function update_themes {
 readonly FILTER="[0-9]{2}:"
 
 # change process name
-printf themed > /proc/self/comm
+printf themed > /proc/$$/comm
 
 
 ## SERVICE RUNNING
