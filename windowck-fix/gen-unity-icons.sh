@@ -18,7 +18,9 @@ while ( [ $err -eq 1 ] && [ $tries -lt 3 ] ); do
   fi
 done
 
-if ( [ $tries -eq 3 ] || ! ( [ -r "macbuntu-os-ithemes-v1804_3.3~bionic~NoobsLab.com_all.deb" ] ) ); then
+echo "Check file integrity..."
+MD5SUM=$(md5sum macbuntu-os-ithemes-v1804_3.3~bionic~NoobsLab.com_all.deb | grep -Eo "^[a-f0-9]+")
+if ( [ $tries -eq 3 ] || [ "$MD5SUM" != "6ea1c15890cfa4c4e10c8c0b21ac8f1b" ] ); then
   echo "Failed to download package! Verify your internet connection and try again"
   exit 1
 fi
