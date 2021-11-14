@@ -1,77 +1,52 @@
 #!/usr/bin/env bash
 
-readonly SCRIPT=$0
-readonly WALL=$1
-readonly THEME=$2
-readonly THEME_MODE=$3
-readonly DIR_WALLPAPER=$4
-NOCHECK=1
-if [ "$5" = "nocheck" ]; then
-  NOCHECK=0
-fi
-
 ## ERRORS BITWISE
 readonly E_WALLPAPER=1
 readonly E_THEME_GTK=2
 readonly E_THEME_ICON=4
 
-if [ "$CheckErrors" = "" ]; then
-  CheckErrors=0
-
-  if [ -d $DIR_WALLPAPER ]; then
-    readonly FILENAME_ENDING=$(ls $DIR_WALLPAPER | grep -i -E -o -m 1 "\.[a-z]{3}")
-    WALLPAPER_LIGHT="$DIR_WALLPAPER/$THEME-light$FILENAME_ENDING"
-    WALLPAPER_AFTERNOON="$DIR_WALLPAPER/$THEME$FILENAME_ENDING"
-    WALLPAPER_DARK="$DIR_WALLPAPER/$THEME-dark$FILENAME_ENDING"
-  else
-    CheckErrors=1
-  fi
-elif [ $(($CheckErrors&E_WALLPAPER)) -eq 0 ]; then
-  readonly FILENAME_ENDING=$(ls $DIR_WALLPAPER | grep -i -E -o -m 1 "\.[a-z]{3}")
-  WALLPAPER_LIGHT="$DIR_WALLPAPER/$THEME-light$FILENAME_ENDING"
-  WALLPAPER_AFTERNOON="$DIR_WALLPAPER/$THEME$FILENAME_ENDING"
-  WALLPAPER_DARK="$DIR_WALLPAPER/$THEME-dark$FILENAME_ENDING"
-fi
-
-# This may change according to each device
-if [ "$PROP_WALLPAPER" = "" ]; then
-  disProfile=$(xfconf-query -c displays -p /ActiveProfile)
-  # disProfile: Default
-  disName=$(xfconf-query -c displays -p /$disProfile -l | grep -Eio -m 1 "[a-z]+\-[0-9]+")
-  # disName: XYZ-1
-  readonly PROP_WALLPAPER="/backdrop/screen0/monitor$disName/workspace0/last-image"
-fi
+readonly CHECK_COMMAND=0  # check files and settings before changing anything
+readonly CHECK_ONLY=1 # check and quit
+readonly CHECK_NONE=2 # run commands without checking files and settings
 
 # LOG COMMANDS INSTEAD OF EXECUTING
-readonly DEBUG_MODE=0
+readonly DEBUG_MODE=1
 echoIt=""
 if [ $DEBUG_MODE -eq 1 ]; then
   echoIt="echo"
 fi
 
 function help {
-  echo "USAGE: $SCRIPT <W|T|A(ll)> <\"MyTheme\"> <afternoon|dark|light> [\"/path/to/wallpapers/\"]"
+  echo "USAGE: $SCRIPT [flags] [options]"
   echo
-  echo "1. W|T|All: select (W)allpaper, (T)heme or both (A)"
-  echo "2. \"MyTheme\": must be theme/wallpaper name"
-  echo "3. Select variant for theme or wallpaper"
-  echo "4. Type the path to wallpapers [optional]"
-  exit 1
+  echo "OPTIONS"
+  echo "    -t \"MyTheme\": theme basename (\"Adwaita-dark\" -> \"Adwaita\")"
+  echo "    -m [light|afternoon|dark]: variants for theme AND wallpaper"
+  echo "        afternoon is default"
+  echo "    -w \"MyWallpaper\" \"/path/to/wallpapers\": wallpaper basename and full path (\"MyWallpaper-light.png\" -> \"MyWallpaper\")"
+  echo
+  echo "FLAGS"
+  echo "    --check-only: check files and settings and return errors"
+  echo "    --no-check: run commands without checking anything"
+  echo "    --show: print current theme or wallpaper (set nothing)"
+  echo
+  echo "themeset.sh"
+  echo "by cleds.upper"
 }
 
 ## CHECK IF WALLPAPERS AND XFCONF PATH DO EXIST
 function wallpapers_check {
-  if [ $NOCHECK -eq 0 ]; then
+  if [ $CHECK -eq $CHECK_NONE ]; then
     return 0
   fi
 
   printf "Checking for xfce4-desktop wallpaper property... "
-  xfconf-query -c xfce4-desktop -p $PROP_WALLPAPER 1> /dev/null 2> /dev/null
+  xfconf-query -c xfce4-desktop -p $THEMESET_PROP_WP 1> /dev/null 2> /dev/null
   if [ $? -ne 0 ]; then
     echo "fail!"
     echo "xfce4-desktop's wallpaper property not found!"
     echo
-    CheckErrors=$(($CheckErrors|$E_WALLPAPER))
+    THEMED_ERRORS=$(($THEMED_ERRORS|$E_WALLPAPER))
     return 1
   fi
   echo "ok!"
@@ -89,7 +64,7 @@ function wallpapers_check {
       echo "fail!"
       echo "File couldn't be read!"
       echo
-      CheckErrors=$(($CheckErrors|$E_WALLPAPER))
+      THEMED_ERRORS=$(($THEMED_ERRORS|$E_WALLPAPER))
       return 1
     fi
     echo "ok!"
@@ -101,7 +76,7 @@ function wallpapers_check {
 
 ## CHECK IF THEMES DO EXIST
 function themes_check {
-  if [ $NOCHECK -eq 0 ]; then
+  if [ $CHECK -eq $CHECK_NONE ]; then
     return 0
   fi
 
@@ -129,7 +104,7 @@ function themes_check {
         echo "fail!"
         echo "xfwm4 theme not found!"
         echo
-        CheckErrors=$(($CheckErrors|$E_THEME_GTK))
+        THEMED_ERRORS=$(($THEMED_ERRORS|$E_THEME_GTK))
         return 1
       fi
 
@@ -141,7 +116,7 @@ function themes_check {
           echo "fail!"
           echo "xfwm4 dark theme not found!"
           echo
-          CheckErrors=$(($CheckErrors|$E_THEME_GTK))
+          THEMED_ERRORS=$(($THEMED_ERRORS|$E_THEME_GTK))
           return 1
         fi
 
@@ -149,7 +124,7 @@ function themes_check {
         echo "fail!"
         echo "GTK theme doesn't have a light/dark variant!"
         echo
-        CheckErrors=$(($CheckErrors|$E_THEME_GTK))
+        THEMED_ERRORS=$(($THEMED_ERRORS|$E_THEME_GTK))
         return 1
       fi
     fi
@@ -159,7 +134,7 @@ function themes_check {
     echo "fail!"
     echo "GTK theme not found!"
     echo
-    CheckErrors=$(($CheckErrors|$E_THEME_GTK))
+    THEMED_ERRORS=$(($THEMED_ERRORS|$E_THEME_GTK))
     return 1
   fi
 
@@ -177,7 +152,7 @@ function themes_check {
         echo "fail!"
         echo "Icon theme doesn't have a light/dark variant!"
         echo
-        CheckErrors=$(($CheckErrors|$E_THEME_ICON))
+        THEMED_ERRORS=$(($THEMED_ERRORS|$E_THEME_ICON))
         return 1
       fi
       break
@@ -187,7 +162,7 @@ function themes_check {
   if [ $found -eq 0 ]; then
     echo "fail!"
     echo
-    CheckErrors=$(($CheckErrors|$E_THEME_ICON))
+    THEMED_ERRORS=$(($THEMED_ERRORS|$E_THEME_ICON))
     return 1
   else
     echo "ok!"
@@ -201,19 +176,17 @@ function themes_check {
 
 ## SET XFCE THEME
 function set_theme {
-  mode=$1
-  themes_check
-  if [ $(($CheckErrors&$E_THEME_GTK)) -ne 0 ]; then
+  if [ $(($THEMED_ERRORS&$E_THEME_GTK)) -ne 0 ]; then
     return 1
   fi
 
-  echo "Apply $mode variant for $THEME theme"
+  echo "Apply $MODE variant for $THEME theme"
 
-  case $mode in
+  case $MODE in
     dark)
       $echoIt xfconf-query -c xsettings -p /Net/ThemeName -s "$THEME-dark"
       $echoIt xfconf-query -c xfwm4 -p /general/theme -s "$THEME-dark"
-      if [ $(($CheckErrors&$E_THEME_ICON)) -eq 0 ]; then
+      if [ $(($THEMED_ERRORS&$E_THEME_ICON)) -eq 0 ]; then
         $echoIt xfconf-query -c xsettings -p /Net/IconThemeName -s "$THEME-dark"
       fi
       ;;
@@ -221,7 +194,7 @@ function set_theme {
     light|afternoon)
       $echoIt xfconf-query -c xsettings -p /Net/ThemeName -s "$THEME"
       $echoIt xfconf-query -c xfwm4 -p /general/theme -s "$THEME"
-      if [ $(($CheckErrors&$E_THEME_ICON)) -eq 0 ]; then
+      if [ $(($THEMED_ERRORS&$E_THEME_ICON)) -eq 0 ]; then
         $echoIt xfconf-query -c xsettings -p /Net/IconThemeName -s "$THEME"
       fi
       ;;
@@ -236,49 +209,163 @@ function set_theme {
 
 ## SET XFCE BACKGROUND
 function set_wallpaper {
-  mode=$1
-  wallpapers_check
-  if ( [ $? -ne 0 ] || [ $(($CheckErrors&$E_WALLPAPER)) -ne 0 ] ); then
+  if [ $(($THEMED_ERRORS&$E_WALLPAPER)) -ne 0 ]; then
     return 1
   fi
 
-  echo "Set wallpaper to $mode mode"
+  echo "Set wallpaper to $MODE mode"
 
-  case $mode in
+  case $MODE in
     dark)
-      $echoIt xfconf-query -c xfce4-desktop -p $PROP_WALLPAPER -s "$WALLPAPER_DARK"
+      $echoIt xfconf-query -c xfce4-desktop -p $THEMESET_PROP_WP -s "$WALLPAPER_DARK"
       ;;
     afternoon)
-      $echoIt xfconf-query -c xfce4-desktop -p $PROP_WALLPAPER -s "$WALLPAPER_AFTERNOON"
+      $echoIt xfconf-query -c xfce4-desktop -p $THEMESET_PROP_WP -s "$WALLPAPER_AFTERNOON"
       ;;
     light)
-      $echoIt xfconf-query -c xfce4-desktop -p $PROP_WALLPAPER -s "$WALLPAPER_LIGHT"
+      $echoIt xfconf-query -c xfce4-desktop -p $THEMESET_PROP_WP -s "$WALLPAPER_LIGHT"
       ;;
     *)
       help
   esac
 }
 
-case $1 in
-  W)
-    set_wallpaper $3
-    ;;
+function show_wallpaper {
+  xfconf-query -c xfce4-desktop -p $THEMESET_PROP_WP
+}
 
-  T)
-    set_theme $3
-    ;;
+function show_theme {
+  gtkName=$(xfconf-query -c xsettings -p /Net/ThemeName)
+  gtkBasename=$(echo $gtkName | grep -Eio "^[a-z0-9_]+")
+  gtkVariant=$(echo $gtkName | grep -Eo "\-(dark|light)" | grep -Eo "(dark|light)")
+  iconName=$(xfconf-query -c xsettings -p /Net/IconThemeName)
+  iconBasename=$(echo $iconName | grep -Eio "^[a-z0-9_]+")
+  iconVariant=$(echo $iconName | grep -Eo "\-(dark|light)" | grep -Eo "(dark|light)")
+  echo "GTK: $gtkBasename ($gtkVariant)"
+  echo "Icon: $iconBasename ($iconVariant)"
+}
 
-  A)
-    set_wallpaper $3
-    set_theme $3
-    ;;
 
-  check-only)
-    wallpapers_check
-    themes_check
-    exit $CheckErrors
-    ;;
+#function initialize {
+  SCRIPT=$0
+  CHECK=0 # default
+  MODE="afternoon"
 
-  *)
-    help
-esac
+  # boolean values
+  USE_THEME=0
+  USE_WALLPAPER=0
+  SET_NOTHING=0
+
+  args=("$@")
+  narg=0
+  skip=0
+
+  # flags first
+  for arg in "${args[@]}"; do
+    if [ "$arg" = "--no-check" ]; then
+      CHECK=$CHECK_NONE
+    elif [ "$arg" = "--check-only" ]; then
+      CHECK=$CHECK_ONLY
+    elif [ "$arg" = "--show" ]; then
+      SET_NOTHING=1
+    fi
+  done
+
+  for arg in "${args[@]}"; do
+    if [ $skip -lt 1 ]; then
+
+      if ( [ "$arg" = "--no-check" ]\
+        || [ "$arg" = "--check-only" ]\
+        || [ "$arg" = "--show" ] ); then
+        :
+      else
+        skip=1
+        if [ "$arg" = "-t" ]; then
+          USE_THEME=1
+          THEME=${args[$narg+1]}
+        elif [ "$arg" = "-m" ]; then
+          MODE=${args[$narg+1]}
+        elif [ "$arg" = "-w" ]; then
+          skip=2
+          USE_WALLPAPER=1
+          WALLPAPER=${args[$narg+1]}
+          DIR_WALLPAPER=${args[$narg+2]}
+        else
+          help
+          exit 255
+        fi
+        if [ $SET_NOTHING -eq 1 ]; then
+          skip=0
+        fi
+
+        if [ $SET_NOTHING -eq 0 ]; then
+          s=$skip
+          while [ $s -gt 0 ]; do
+            if [ "${args[$narg+$s]}" = "" ]; then
+              help
+              exit 255
+            fi
+            s=$(($s-1))
+          done
+        fi
+      fi
+
+    else
+      skip=$(($skip-1))
+    fi
+    narg=$(($narg+1))
+  done
+
+  if [ "$THEMED_ERRORS" = "" ]; then
+    THEMED_ERRORS=0
+  fi
+
+  if [ $USE_WALLPAPER -eq 1 ]; then
+    # This may change according to each device
+    if [ "$THEMESET_PROP_WP" = "" ]; then
+      disProfile=$(xfconf-query -c displays -p /ActiveProfile)
+      # disProfile: Default
+      disName=$(xfconf-query -c displays -p /$disProfile -l | grep -Eio -m 1 "[a-z]+\-[0-9]+")
+      # disName: XYZ-1
+      THEMESET_PROP_WP="/backdrop/screen0/monitor$disName/workspace0/last-image"
+    fi
+
+    if [ $(($THEMED_ERRORS&$E_WALLPAPER)) -eq 0 ]; then
+      if [ -d "$DIR_WALLPAPER" ]; then
+        FILENAME_ENDING=$(ls $DIR_WALLPAPER | grep -i -E -o -m 1 "\.[a-z]{3}")
+        WALLPAPER_LIGHT="$DIR_WALLPAPER/$WALLPAPER-light$FILENAME_ENDING"
+        WALLPAPER_AFTERNOON="$DIR_WALLPAPER/$WALLPAPER$FILENAME_ENDING"
+        WALLPAPER_DARK="$DIR_WALLPAPER/$WALLPAPER-dark$FILENAME_ENDING"
+      else
+        echo "Wallpaper folder not found!"
+        THEMED_ERRORS=$(($THEMED_ERRORS|$E_WALLPAPER))
+      fi
+    fi
+
+    if [ $SET_NOTHING -eq 1 ]; then
+      show_wallpaper
+    else
+      if [ $CHECK -ne $CHECK_NONE ]; then
+        wallpapers_check
+      fi
+      if [ $CHECK -ne $CHECK_ONLY ]; then
+        set_wallpaper
+      fi
+    fi
+  fi
+
+  if [ $USE_THEME -eq 1 ]; then
+    if [ $SET_NOTHING -eq 1 ]; then
+      show_theme
+    else
+      if [ $CHECK -ne $CHECK_NONE ]; then
+        themes_check
+      fi
+      if [ $CHECK -ne $CHECK_ONLY ]; then
+        set_theme
+      fi
+    fi
+  fi
+  
+  exit $THEMED_ERRORS
+# }
